@@ -1,0 +1,58 @@
+** Commands To Execute In vs code terminal ....in powershell open with command prompt
+ 1. npm --version     - It is used to check the version of nodejs 
+ 2. npm install @angular/cli@latest  - It is used to install angular cli
+ 3. ng new project_name      - It is used to create new angular project
+	3.1 would you like to add angular routing? yes
+	3.2 which stylesheet format you want to use? CSS
+	3.3 go to file then in src then in app then in app.component.html file.remove all the content in it.
+		<h1> {{title}}</h1>
+
+		<input type="text" #name placeholder="enter your name" name="Name"> <br>
+
+		<input type="text" #address placeholder="enter your address" name="Address"> <br>
+
+		<input type="text" #contact placeholder="enter your contact" name="Contact"> <br>
+
+		<input type="email" #email placeholder="enter your email" name="Email"> <br>
+
+		<input type="password" #password placeholder="enter your password" name="Password"> <br>
+
+		<button (click)="getValue(name.value, address.value, contact.value, email.value)">Register</button>
+
+		<h1>Your Rejistred data</h1> <br>
+
+		<p> Name:{{displayname}}</p>
+		<p> Address:{{displayaddress}}</p>
+		<p> Contact:{{displaycontact}}</p>
+		<p> Email:{{displayemail}}</p>
+	3.4 go to app.component.ts and write code
+		import { Component } from '@angular/core';
+
+		@Component({
+  		  selector: 'app-root',
+  		  templateUrl: './app.component.html',
+  		  styleUrls: ['./app.component.css']
+		})
+		export class AppComponent {
+  		  title = 'registration form';
+
+  		  displayname='';
+  		  displayaddress='';
+  		  displaycontact='';
+  		  displayemail='';
+
+  		  getValue(name:string, address:string, contact:string, email:string){
+    		    this.displayname=name;
+    		    this.displayaddress=address;
+    		    this.displaycontact=contact;
+    		    this.displayemail=email;
+  		  }
+
+		}
+ 4. check directory or type cd directory_name
+ 5. ng serve        - It is used to compile the code (Make sure you are in correct directory before executing this command)
+ 6. type- y or yes
+7.open localhost:4200
+
+
+
