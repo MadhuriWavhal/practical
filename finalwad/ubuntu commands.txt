@@ -1,0 +1,18 @@
+***Git install***
+sudo apt install git
+
+
+***docker install***
+sudo apt install docker.io
+sudo snap install docker
+docker --version
+
+
+***node js Install***
+sudo apt install nodejs
+node -v
+
+
+***Angular install***
+npm install -g @angular/cli@latest
+
