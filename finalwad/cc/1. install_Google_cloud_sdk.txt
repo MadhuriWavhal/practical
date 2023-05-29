@@ -1,0 +1,28 @@
+1. download google colud sdk installer
+2. install it
+3. open cloud sdk
+4. run 'gcloud init'
+5. create new configuration
+__________________________________________________________________
+6. (test.py file)
+
+import webapp2
+
+class MainPage(webapp2.RequestHandler):
+	def get(self):
+		self.responce.write("Hello World, WE ARE RMDSSOE")
+
+app = webapp2.WSGIApplication([('/',MainPage)], debug=True)
+_________________________________________________________________
+7. (app.yaml file)
+
+runtime: python27
+api_version: 1
+threadsafe: false
+
+handlers:
+- url: /
+  script: test.app
+_________________________________________________________________
+8. save test.py and app.yaml  file in same folder
+9. run, 'py google-cloud-sdk\bin\dev_appserver.py <folder path whre test and app.yaml files are save>

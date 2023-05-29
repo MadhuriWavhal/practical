@@ -1,0 +1,223 @@
+(app.yaml file)
+
+runtime: python27
+threadsafe: true
+
+handlers:
+- url: /
+  script: main.app
+____________________________________________________________________________________________
+(error.html file)
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Error page</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <div style="text-align: center">
+      <h2>No such pin exists</h2>
+      <a href="http://localhost:8080/"><h3>Back to the Home page</h3></a>
+    </div>
+  </body>
+</html>
+___________________________________________________________________________________________
+(index.html file)
+
+<html>
+  <style>
+    .weatherText {
+      font-family: 'Lato', 'sans-serif';
+      font-size: 24px;
+      text-align: center;
+    }
+
+    #weatherForm {
+      padding: 20px;
+    }
+
+    #weatherSubmit {
+      color: white;
+      background-color: #083375;
+      padding: 5px 20px;
+      border-radius: 5px;
+      margin-top: 20px;
+    }
+
+    #weatherSubmit:hover {
+      cursor: pointer;
+    }
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    .card {
+      border: 2px solid black;
+      width: 50%;
+
+      justify-content: center;
+      align-items: center;
+    }
+  </style>
+  <head>
+    <title class="alignct">Post Office Finder</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <div class="card">
+      <h2 class="weatherText">Post Office Finder Using WebApp</h2>
+      <h1 id="error_head" style="display: none" value="{{error}}">{{error}}</h1>
+
+      <form class="weatherText" id="weatherForm" action="/" method="post">
+        Location Zip Code:
+        <input
+          class="weatherText"
+          id="weatherInput"
+          type="text"
+          name="zipCode"
+        /><br />
+        <input
+          class="weatherText"
+          id="weatherSubmit"
+          type="submit"
+          value="Submit"
+        />
+        <button
+          id="weatherSubmit"
+          class="weatherText"
+          onclick="document.getElementById(
+         'weatherInput').value = ''"
+        >
+          Clear
+        </button>
+      </form>
+    </div>
+  </body>
+</html>
+____________________________________________________________________________________________
+(results.html file)
+
+<!DOCTYPE html>
+<html lang="en">
+  <style>
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    #weatherResults {
+      background-color: #83e9c2;
+      font-family: 'Lato', sans-serif;
+      font-size: 24px;
+      padding: 30px;
+      display: inline-block;
+      text-align: center;
+      margin: 20px;
+      margin-top: 10%;
+      border: 2px solid black;
+      border-radius: 5px;
+    }
+  </style>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Post Office Information</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <div id="weatherResults">
+      <table>
+        <tr>
+          <th>
+            <h3>State of Post Office :</h3>
+          </th>
+          <th>
+            <h3>{{ post_office }}</h3>
+          </th>
+        </tr>
+        <tr>
+          <th>
+            <h3>Name of Post Office :</h3>
+          </th>
+          <th>
+            <h3>{{ name }}</h3>
+          </th>
+        </tr>
+        <tr>
+          <th>
+            <h3>Block of Post Office:</h3>
+          </th>
+          <th>
+            <h3>{{ block }}</h3>
+          </th>
+        </tr>
+        <tr>
+          <th>
+            <h3>District of Post Office:</h3>
+          </th>
+          <th>
+            <h3>{{ district }}</h3>
+          </th>
+        </tr>
+      </table>
+      <a href="http://localhost:8080/"><h4>Back to the Home page</h4></a>
+    </div>
+  </body>
+</html>
+____________________________________________________________________________________________
+(main.py file)
+
+import os
+import json
+import urllib
+import webapp2
+from google.appengine.ext.webapp import template
+
+class MainPage(webapp2.RequestHandler):
+    def get(self):
+        template_values = {}
+        path = os.path.join(os.path.dirname(__file__), 'index.html')
+        self.response.out.write(template.render(path, template_values))
+
+    def post(self):
+        pincode = self.request.get('zipCode')
+        if not pincode.isnumeric() or not len(pincode) == 6:
+            template_values = {
+                "error": "Incorrect Pin Code (String / False Code entered)"
+            }
+            path = os.path.join(os.path.dirname(__file__), 'index.html')
+            return self.response.out.write(template.render(path, template_values))
+        url = "https://api.postalpincode.in/pincode/" + pincode
+        data = urllib.urlopen(url).read()
+        data = json.loads(data)
+        if(data[0]['Status'] == 'Success'):
+            post_office = data[0]['PostOffice'][0]['State']
+            name = data[0]['PostOffice'][0]['Name']
+            block = data[0]['PostOffice'][0]['Block']
+            district = data[0]['PostOffice'][0]['District']
+            template_values = {
+                "post_office": post_office,
+                "name": name,
+                "block": block,
+                "district": district
+            }
+            path = os.path.join(os.path.dirname(__file__), 'results.html')
+            self.response.out.write(template.render(path, template_values))
+        else:
+            template_values = {}
+            path = os.path.join(os.path.dirname(__file__), 'error.html')
+            self.response.out.write(template.render(path, template_values))
+
+
+app = webapp2.WSGIApplication([('/', MainPage)], debug=True)

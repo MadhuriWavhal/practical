@@ -1,0 +1,36 @@
+1)install docker desktop/docker toolbox
+   1.1 After installation open new generated docker shell
+ 1.2  Install WSL-link is given   if not -> https://aka.ms/wsl2kernel
+  1.3 Download wsl2 linux kernel
+ 1.4 Now in that docker shell -> one path generated->copy that and paste It in cmd
+ 1.5 Type-> docker version
+  1.6 Now go in docker shell and right click->restart docker desktop
+1.7 Now go to cmd again and paste that path that given in docker desktop
+1.8 go to browser type->localhost/tutorial        note:don’t close any window of docker, crome
+1.9 go on docker window  
+
+2)install node
+3)open docker terminal
+4)check install or not:docker - - version
+5)install extension in vs code name as:docker from Microsoft
+6)in vs code: open folder and create new file name as:Dockerfile
+7) in docker file
+  FROM node:alphine
+COPY . /partb              //(…folder name)
+CMD node /partb/madhuri.js
+
+8)create new file js file:madhuri.js
+console.log("Name:Madhuri wavhal");
+console.log("Class:TE");
+console.log("Subject:Web Apllication Development");
+console.log("Assignment 2B");
+
+9)open new terminal in vs code
+Command:
+docker - - version
+node madhuri.js //js file name
+docker build -t partb     //partb is folder name
+docker images
+
+
+

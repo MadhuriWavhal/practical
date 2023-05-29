@@ -1,0 +1,38 @@
+***Create Nodejs Application ***
+
+1. Go to command prompt
+2. type- npm init
+3. enter upto description : type -static website
+4. auther type- your_name
+5. enter up to git repository : copy git https link and paste it in brackets
+6. enter up to "Is this ok?" appear : type- yes
+7. type - ls
+8. type - code .
+
+***Redirected to vs code***
+create one new file named as- index.js
+
+***go to cmd again***
+9. type - npm i express --save
+
+***go to vscode again and write the code in index.js***
+
+const express = require('express');
+const app = express();
+
+app.use(express.static('public'));
+
+app.listen(3000, () => {
+    console.log('Application is started');
+})
+
+10. Create one folder named as "public"
+11. Create "index.html" file in it
+12. type ! and enter
+13. add one heading tag in body tag.give some heading as Static Website
+14. save index.html and index.js file.
+15. go to new cmd: type - node index.js
+16. go to localhost3000
+	
+
+
